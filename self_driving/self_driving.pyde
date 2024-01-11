@@ -94,6 +94,7 @@ def keyPressed():
             controls.deccel()
         if (key == ' '):
             controls.reset()
+
     if (key == 'z' or key == 'Z'):
         glv.disableScaling = not glv.disableScaling
     if (key == 'h' or key == 'H'):
@@ -102,55 +103,11 @@ def keyPressed():
         glv.renderTrackmap = not glv.renderTrackmap
     if (key == 'l' or key == 'L'):
         glv.renderCollisionLines = not glv.renderCollisionLines
-    if (key == 'r' or key == 'R'):
-        if (glv.renderer == 0):
-            glv.renderer = 1
-        else:
-            if (glv.renderer == 1):
-                glv.renderer = 2
-            else:
-                if (glv.renderer == 2):
-                    glv.renderer = 0
-    if (key == 'n' or key == 'N'):
-        glv.BlockLearning = not glv.BlockLearning
-        print("*BlockLearning set to: "+str(glv.BlockLearning))
-    if (key == '0'):
-        tm.setTrack(0)
+
+
+    if key in '1234567890':
+        track_index = int(key) - 1
+        tm.setTrack(track_index)
         glv.ForceReset = True
-        print("Loaded track: "+tm.tracknames[tm.selectedTrack])
-    if (key == '1'):
-        tm.setTrack(1)
-        glv.ForceReset = True
-        print("Loaded track: "+tm.tracknames[tm.selectedTrack])
-    if (key == '2'):
-        tm.setTrack(2)
-        glv.ForceReset = True
-        print("Loaded track: "+tm.tracknames[tm.selectedTrack])
-    if (key == '3'):
-        tm.setTrack(3)
-        glv.ForceReset = True
-        print("Loaded track: "+tm.tracknames[tm.selectedTrack])
-    if (key == '4'):
-        tm.setTrack(4)
-        glv.ForceReset = True
-        print("Loaded track: "+tm.tracknames[tm.selectedTrack])
-    if (key == '5'):
-        tm.setTrack(5)
-        glv.ForceReset = True
-        print("Loaded track: "+tm.tracknames[tm.selectedTrack])
-    if (key == '6'):
-        tm.setTrack(6)
-        glv.ForceReset = True
-        print("Loaded track: "+tm.tracknames[tm.selectedTrack])
-    if (key == '7'):
-        tm.setTrack(7)
-        glv.ForceReset = True
-        print("Loaded track: "+tm.tracknames[tm.selectedTrack])
-    if (key == '8'):
-        tm.setTrack(8)
-        glv.ForceReset = True
-        print("Loaded track: "+tm.tracknames[tm.selectedTrack])
-    if (key == '9'):
-        tm.setTrack(9)
-        glv.ForceReset = True
-        print("Loaded track: "+tm.tracknames[tm.selectedTrack])
+        print("Loaded track: " + tm.tracknames[tm.selectedTrack])
+

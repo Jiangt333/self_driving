@@ -18,30 +18,27 @@ def init():
     
     ### EDIT THIS TO ADD MORE TRACKS ###
     selectedTrack = 0
-    nTracks = 5
-    tracknames = ["Donut Plains",
-                  "model_1",
+    nTracks = 4
+    tracknames = ["model_1",
                   "model_2",
                   "model_3",
                   "model_4"]
 
-    track_sprites = ["Donut_Plains_2.png",
-                     "model_1.png",
+    track_sprites = ["model_1.png",
                      "model_2.png",
                      "model_3.png",
                      "model_4.png"]
 
-    trackmap_sprites = ["Donut_Plains_2-map.png",
-                        "model_1_map.png",
+    trackmap_sprites = ["model_1_map.png",
                         "model_2_map.png",
                         "model_3_map.png",
                         "model_4_map.png"]
 
-    initial_posx = [920.0, 312.0, 215, 475, 805]
-    initial_posy = [619.0, 495.0, 520, 795, 570]
-    initial_dir = [[0.0, -1.0], [0.0, -1.0], [0.0, -1.0], [0.0, -1.0], [0.0, -1.0]]
-    initial_velocity = [1.0, 1.0, 1.0, 1.0, 1.0]
-    initial_rotation = [90.0, 90.0, 90.0, 180.0, 270.0]
+    initial_posx = [312.0, 215, 475, 805]
+    initial_posy = [495.0, 520, 795, 570]
+    initial_dir = [[0.0, -1.0], [0.0, -1.0], [0.0, -1.0], [0.0, -1.0]]
+    initial_velocity = [1.0, 1.0, 1.0, 1.0]
+    initial_rotation = [90.0, 90.0, 180.0, 270.0]
     #######################################
     
 def ldTrack():
