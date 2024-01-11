@@ -92,7 +92,9 @@ def getTrackmap():
             glv.FLC = True
         else:
             if (glv.FLC):
+                glv.STry = glv.STry + 1
                 print(" # Finish line crossed at try "+str(glv.Try)+". Timestamp: "+str(timer.frames)+" frames.")
+                print(" # Successful Numbers: " + str(glv.STry))
                 glv.FLC = False
         return True
     else:

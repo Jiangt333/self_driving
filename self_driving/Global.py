@@ -18,6 +18,7 @@ def init():
     global BlockLearning
     global Try
     global FLC
+    global STry
     
     ### Init engine globals ###
     eventDelta = 0.0
@@ -35,4 +36,5 @@ def init():
     ### Init Q-Learning control vars ###
     BlockLearning = False
     Try = 1
+    STry = 0
     FLC = False

@@ -13,9 +13,24 @@ def init():
     global y
 
     q = [[0.0 for x in range(3)] for y in range(int(2**(len(sm.state))))]
-  
+
     a = 0.1
     y = 0.9
+
+def saveQTableToFile():
+    global q
+    with open("Q_Table.txt", 'w') as file:
+        for row in q:
+            file.write(','.join(map(str, row)) + '\n')
+
+def loadQTableFromFile():
+    q_table = []
+    with open("Q_Table.txt", 'r') as file:
+        for line in file:
+            row = [float(value) for value in line.strip().split(',')]
+            q_table.append(row)
+    print("Data Loading Successful!")
+    return q_table
 
 #### Calcs state index ####
 def calcstate():

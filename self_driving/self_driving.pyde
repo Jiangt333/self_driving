@@ -32,7 +32,7 @@ def setup():
         loadPixels()
         # 加载赛道地图的像素数据
         render.trackmap.loadPixels()
-    
+
 def draw():
     glv.eventDelta = 1.0/frameRate
 
@@ -55,6 +55,9 @@ def draw():
                     print("-AI died in try "+str(glv.Try)+". Timestamp: "+str(timer.frames)+" frames.")
                     glv.Try = glv.Try+1
                     controls.reset()
+                if (glv.Try + glv.STry) % 30 == 0:
+                    qlearn.saveQTableToFile()
+
             ### 玩家是人，则人来玩 ###
             else:
                 timer.run()
@@ -78,6 +81,7 @@ def keyPressed():
             # AI玩
             player.isAI = True
             player.flag = False
+            qlearn.q = qlearn.loadQTableFromFile()
         if (key == 'k' or key == 'K'):
             # 人玩
             player.isAI = False
@@ -110,4 +114,3 @@ def keyPressed():
         tm.setTrack(track_index)
         glv.ForceReset = True
         print("Loaded track: " + tm.tracknames[tm.selectedTrack])
-
