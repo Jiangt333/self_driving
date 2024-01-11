@@ -131,7 +131,7 @@ def getTrackmap(x, y):
     
     c = trackmap.pixels[int(x)+int(y)*1024]
     
-    if (floor(red(c)) == 0 and floor(green(c)) == 255):
+    if (floor(red(c)) <= 15 and floor(green(c)) >= 240):
         # (0, 255, *) 这样的颜色（*表示任意值），表示这个位置可通过
         return True
     else:

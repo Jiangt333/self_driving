@@ -87,8 +87,8 @@ def getTrackmap():
     
     c = render.trackmap.pixels[int(posx)+int(posy)*1024]
     
-    if (floor(red(c)) == 0 and floor(green(c)) == 255):
-        if (floor(blue(c)) == 255):
+    if (floor(red(c)) <= 15 and floor(green(c)) >= 240):
+        if (floor(blue(c)) >= 240):
             glv.FLC = True
         else:
             if (glv.FLC):
