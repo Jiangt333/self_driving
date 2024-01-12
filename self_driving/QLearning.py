@@ -7,12 +7,12 @@ import StateManager as sm
 
 def init():
     # q-learning的超参数
-    global points
+    global scores
     global qTable
     global alpha_
     global gama_
 
-    points = 0.0
+    scores = 0.0
     qTable = [[0.0 for x in range(3)] for y in range(int(2 ** (len(sm.state))))]
     alpha_ = 0.1
     gama_ = 0.9
@@ -20,29 +20,35 @@ def init():
 
 # 奖赏函数
 def getReward(action):
-    global points
+    global scores
 
-    # 初始10分
-    points = 10.0
+    # 初始 0 分
+    scores = 0.0
     if (player.isAlive):
-        if (sm.state[0] or sm.state[1] or sm.state[2] or sm.state[3] or sm.state[4] or sm.state[5] or sm.state[6]):
+        if any(sm.state):
             # 如果有碰撞检测线点未检测出碰撞，给出对应分数
-            points = 5.0 - (1.0 - sm.distfront) * 60.0
+            scores = 5.0 - (1.0 - sm.distfront) * 60.0
         else:
-            # 汽车什么也没做，分数=20（防止汽车一直空转，也可以加速学习）
+            # 如果所有检测线都没有检测出碰撞
             if (action == 0):
-                points = 20.0
+                # 汽车直行，分数=20
+                scores = 20.0
+            else:
+                # 汽车采取左转或右转
+                scores = 10.0
     else:
         # 如果车撞到障碍了，游戏重新开始，并给予惩罚
-        points = -3000.0
+        scores = -3000.0
 
-    return points
+    return scores
+
 
 def saveQTableToFile():
     global qTable
     with open("Q_Table.txt", 'w') as file:
         for row in qTable:
             file.write(','.join(map(str, row)) + '\n')
+
 
 def loadQTableFromFile():
     q_table = []
@@ -52,6 +58,7 @@ def loadQTableFromFile():
             q_table.append(row)
     print("Data Loading Successful!")
     return q_table
+
 
 # 计算状态
 def calcstate():
@@ -113,7 +120,7 @@ def qlearn():
         fstate = calcstate()  # 得到跳转到的下一个状态
         # 更新Q-table时选择maxq对应的动作（目标策略：greedy）
         faction = select_action(fstate, False)
-        current_state_value = qTable[current_state][action]
+
         # 更新Q-table
         qTable[current_state][action] = qTable[current_state][action] + alpha_ * (
                     reward + gama_ * qTable[fstate][faction] - qTable[current_state][action])

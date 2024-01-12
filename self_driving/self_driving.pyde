@@ -1,5 +1,3 @@
-# KartAI https://github.com/eritzyg/KartAI/
-
 import Global as glv
 import TrackManager as tm
 import Render as render

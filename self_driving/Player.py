@@ -54,14 +54,13 @@ def updatePos():
     dir[1] = -sin(rotation_to_radians)  # 计算Y方向上的方向向量
 
     # 近似
-    dir[0] = 0.0 if -1e-4 < dir[0] < 1e-4 else dir[0]
-    dir[1] = 0.0 if -1e-4 < dir[1] < 1e-4 else dir[1]
+    if -1e-4 < dir[0] < 1e-4:
+        dir[0] = 0.0
+    if -1e-4 < dir[1] < 1e-4:
+        dir[1] = 0.0
 
     # 旋转角度更新计算
-    if (rotation > 360.0):
-        rotation = rotation - 360.0
-    if (rotation < 0.0):
-        rotation = 360.0 + rotation
+    rotation = rotation % 360
     rotation = rotation + innerce / 30.0  # 根据车辆的偏移innerce更新旋转角度
 
     # 速度范围约束
