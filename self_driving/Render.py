@@ -17,9 +17,9 @@ def init():
     global trackmap
 
     # 缩放比例
-    global displayscale
+    global scale
     # 设置缩放比例（整数）
-    displayscale = 3
+    scale = 3
 
     # 加载小车图像
     car = loadImage("car.png")
@@ -33,14 +33,12 @@ def drawSpritesAltRenderer():
     global track
 
     # 缩放比例
-    global displayscale
+    global scale
 
     # 显示赛道
-    image(track, -(player.posx * displayscale) + (width / 2), -(player.posy * displayscale) + (height / 2),
-          1024 * displayscale, 1024 * displayscale)
+    image(track, -(player.posx * scale) + (width / 2), -(player.posy * scale) + (height / 2), 1024 * scale, 1024 * scale)
     if (glv.renderTrackmap):
-        image(trackmap, -(player.posx * displayscale) + (width / 2), -(player.posy * displayscale) + (height / 2),
-              1024 * displayscale, 1024 * displayscale)
+        image(trackmap, -(player.posx * scale) + (width / 2), -(player.posy * scale) + (height / 2), 1024 * scale, 1024 * scale)
 
     # 显示车辆
     pushMatrix()
@@ -48,7 +46,7 @@ def drawSpritesAltRenderer():
     rotate(radians(90.0 - player.rotation))
     rotate(radians(-player.innerce))
     translate(-width / 2, -height / 2)
-    image(car, (width / 2) - 10 * displayscale, (height / 2) - 22 * displayscale, 21 * displayscale, 45 * displayscale)
+    image(car, (width / 2) - 10 * scale, (height / 2) - 22 * scale, 21 * scale, 45 * scale)
     popMatrix()
 
     # 绘制车头前面的7条碰撞检测线
@@ -104,7 +102,7 @@ def drawTimer():
     textWithBorders("EPOCH " + str(glv.Try), width - 23, 40)
     textWithBorders("TIME " + str(int(player.frames)), width - 23, 60)
     textWithBorders("BEST TIME " + str(int(player.best)), width - 23, 80)
-    textWithBorders("REWARD " + str(int(qlearn.points)), width - 23, 100)
+    textWithBorders("REWARD " + str(int(qlearn.scores)), width - 23, 100)
 
 
 def textWithBorders(txt, x, y):
