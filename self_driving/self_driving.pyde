@@ -109,7 +109,7 @@ def keyPressed():
         glv.renderCollisionLines = not glv.renderCollisionLines
 
 
-    if key in '1234567890':
+    if (key == '1' or key == '2' or key == '3' or key == '4' or key == '5' or key == '6' or key == '7' or key == '8' or key == '9'):
         track_index = int(key) - 1
         tm.setTrack(track_index)
         glv.ForceReset = True
