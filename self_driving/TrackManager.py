@@ -19,10 +19,10 @@ def init():
     ### EDIT THIS TO ADD MORE TRACKS ###
     selectedTrack = 0
     nTracks = 4
-    tracknames = ["model_1",
-                  "model_2",
-                  "model_3",
-                  "model_4"]
+    tracknames = ["Map 1",
+                  "Map 2",
+                  "Map 3",
+                  "Map 4"]
 
     track_sprites = ["model_1.png",
                      "model_2.png",
