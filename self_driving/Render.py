@@ -96,40 +96,41 @@ def drawHUD():
     # if (glv.press > 0):
     #     textWithBorders("Press considered", 30, 140)
 
-### Timer renderer ### 
+
 def drawTimer():
     #Font
     global font
     
-    #### Draw Timer ####
+    # 右上角信息显示
     textFont(font, 18)
     textAlign(RIGHT)
-    textWithBorders(tm.tracknames[tm.selectedTrack], width-23, 23)
-    textWithBorders("TIME "+str(int(timer.frames)), width-23, 42)
-    textWithBorders("BEST TIME "+str(int(timer.best)), width-23, 60)
-    textWithBorders("REWARD "+str(int(points.points)), width-23, 80)
+    textWithBorders(tm.tracknames[tm.selectedTrack], width-23, 20)
+    textWithBorders("EPOCH " + str(glv.Try), width - 23, 40)
+    textWithBorders("TIME "+str(int(timer.frames)), width-23, 60)
+    textWithBorders("BEST TIME "+str(int(timer.best)), width-23, 80)
+    textWithBorders("REWARD "+str(int(points.points)), width-23, 100)
     
     
 def textWithBorders(txt, x, y):
-    fill(0)
-    text(txt, x-1, y)
-    text(txt, x-1, y-1)
-    text(txt, x, y-1)
-    text(txt, x+1, y)
-    text(txt, x+1, y+1)
-    text(txt, x, y+1)
-    fill(255)
-    text(txt, x, y)
+    offsets = [(-1, 0), (-1, -1), (0, -1), (1, 0), (1, 1), (0, 1)]  # 不同方向的偏移
+
+    fill(0)             # 设置文本的填充颜色为黑色
+    for offset in offsets:
+        text(txt, x + offset[0], y + offset[1])
+
+    fill(255)           # 设置文本的填充颜色为白色
+    text(txt, x, y)     # 在原始位置绘制文本
     
 ### 获取赛道地图上指定位置 (x, y) 处的信息，检测该像素点是否可通过 ###
 def getTrackmap(x, y):
+
     # trackmap被禁用就返回True #
     if (not glv.EnableTrackmap):
         return True
     
     global trackmap
     
-    c = trackmap.pixels[int(x)+int(y)*1024]
+    c = trackmap.pixels[int(x) + int(y)*1024]
     
     if (floor(red(c)) <= 15 and floor(green(c)) >= 240):
         # (0, 255, *) 这样的颜色（*表示任意值），表示这个位置可通过
