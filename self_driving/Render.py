@@ -21,7 +21,7 @@ def init():
     # 精灵缩放比例
     global displayscale
     # 设置缩放比例（整数）
-    displayscale = 3
+    displayscale = 2
     
     # 加载小车图像
     car = loadImage("car.png")
@@ -84,17 +84,11 @@ def drawHUD():
     #Font
     global font
     
-    ### HUD Draw ###
-    textFont(font, 18)
-    textAlign(LEFT)
-    textWithBorders("Tip:  Before play, choose your player which 'j' or 'J' is AI play and 'k' or 'K' is people play", 30, 30)
-    # textWithBorders("Position: ("+str(player.posx)+", "+str(player.posy)+")", 30, 30)
-    # textWithBorders("Velocity: "+str(player.velocity)+" Innerce: "+str(player.innerce)+" Rotation: "+str(player.rotation), 30, 50)
-    # textWithBorders("Direction: "+str(player.dir[0])+", "+str(player.dir[1])+" isAlive: "+str(player.isAlive), 30, 70)
-    # textWithBorders("State: "+str(sm.state)+" Distfront: "+str(sm.distfront), 30, 90)
-    # textWithBorders("FPS: "+str(frameRate)+" EventDelta: "+str(glv.eventDelta), 30, 110)
-    # if (glv.press > 0):
-    #     textWithBorders("Press considered", 30, 140)
+    # 开始游戏的指南
+    if(player.flag == True):
+        textFont(font, 50)
+        textAlign(CENTER, CENTER)
+        textWithBorders("Tip:  Before playing, choose your player \n which 'j' or 'J' is AI play and 'k' or 'K' is people play", 670, 300)
 
 ### Timer renderer ### 
 def drawTimer():
@@ -105,9 +99,10 @@ def drawTimer():
     textFont(font, 18)
     textAlign(RIGHT)
     textWithBorders(tm.tracknames[tm.selectedTrack], width-23, 23)
-    textWithBorders("TIME "+str(int(timer.frames)), width-23, 42)
-    textWithBorders("BEST TIME "+str(int(timer.best)), width-23, 60)
-    textWithBorders("REWARD "+str(int(points.points)), width-23, 80)
+    textWithBorders("Try "+str(glv.Try), width-23, 43)
+    textWithBorders("Time "+str(int(timer.frames)), width-23, 63)
+    textWithBorders("Best Time "+str(int(timer.best)), width-23, 83)
+    textWithBorders("Reward "+str(int(points.points)), width-23, 103)
     
     
 def textWithBorders(txt, x, y):
