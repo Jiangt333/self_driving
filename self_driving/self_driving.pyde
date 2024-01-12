@@ -77,40 +77,46 @@ def draw():
 def keyPressed():
     # 游戏开始前选择玩家是AI自动玩还是人玩
     if(player.flag == True):
-        if (key == 'j' or key == 'J'):
+        if key in 'jJ':
             # AI玩
             player.isAI = True
             player.flag = False
             qlearn.q = qlearn.loadQTableFromFile()
-        if (key == 'k' or key == 'K'):
+        if key in 'kK':
             # 人玩
             player.isAI = False
             player.flag = False
+
+    if player.isAI:
+        if key in 'iI':
+            qlearn.q = [[0.0 for x in range(3)] for y in range(int(2**(len(sm.state))))]
+            print("Q_Table has been initialized")
         
-    if (not player.isAI):
-        if (key == 'a' or key == 'A'):
+    if not player.isAI:
+        if key in 'aA':
             controls.turnLeft()
-        if (key == 'd' or key == 'D'):
+        if key in 'dD':
             controls.turnRight()
-        if (key == 'w' or key == 'W'):
+        if key in 'wW':
             controls.accel()
-        if (key == 's' or key == 'S'):
+        if key in 'sS':
             controls.deccel()
-        if (key == ' '):
+        if key == ' ':
             controls.reset()
 
-    if (key == 'z' or key == 'Z'):
+    if key in 'zZ':
         glv.disableScaling = not glv.disableScaling
-    if (key == 'h' or key == 'H'):
+    if key in 'hH':
         glv.HUDEnabled = not glv.HUDEnabled
-    if (key == 'm' or key == 'M'):
+    if key in 'mM':
         glv.renderTrackmap = not glv.renderTrackmap
-    if (key == 'l' or key == 'L'):
+    if key in 'lL':
         glv.renderCollisionLines = not glv.renderCollisionLines
 
 
     if key in '1234567890':
         track_index = int(key) - 1
-        tm.setTrack(track_index)
+        tm.setTrack(track_index % tm.nTracks)
         glv.ForceReset = True
         print("Loaded track: " + tm.tracknames[tm.selectedTrack])
+
