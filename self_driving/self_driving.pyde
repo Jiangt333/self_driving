@@ -90,7 +90,7 @@ def keyPressed():
     if player.isAI:
         if key == 'i' or key == 'I':
             qlearn.q = [[0.0 for x in range(3)] for y in range(int(2**(len(sm.state))))]
-            print("Q_Table has been initialized")
+            print(" # Q_Table has been initialized")
 
     if not player.isAI:
         if key == 'a' or key == 'A':
