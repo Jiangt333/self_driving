@@ -70,7 +70,7 @@ def renderTestlines():
             stroke(255, 255, 0)  # 黄色
         else:
             stroke(0)   # 黑色
-        line(width/2, height/2, width/2+testpoints[n][0]*render.displayscale, height/2+testpoints[n][1]*render.displayscale)
+        line(width/2, height/2, width/2+testpoints[n][0]*render.scale, height/2+testpoints[n][1]*render.scale)
 
 # 更新状态
 def updateState():
