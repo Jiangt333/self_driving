@@ -7,7 +7,7 @@ import Timer as timer
 import Points as points
 
 def turnLeft():
-    if (not player.isAlive): return
+    if not player.isAlive:return
     glv.press = 2
     if (player.innerce < 30.0):
         if (player.innerce < 0.0):
@@ -15,7 +15,7 @@ def turnLeft():
         player.innerce = player.innerce+25.0
         
 def turnRight():
-    if (not player.isAlive): return
+    if not player.isAlive:return
     glv.press = 2
     if (player.innerce > -30.0):
         if (player.innerce > 0.0):
@@ -24,12 +24,12 @@ def turnRight():
 
 # 加速
 def accel():
-    if (not player.isAlive): return
+    if not player.isAlive:return
     player.velocity = player.velocity+0.1
 
 # 减速
 def deccel():
-    if (not player.isAlive): return
+    if not player.isAlive:return
     player.velocity = player.velocity-0.1
     
 def reset():
