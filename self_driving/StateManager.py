@@ -7,17 +7,16 @@ import TrackManager as tm
 def init():
     # 状态变量
     global state
+    global ranges
     global distfront
     global testpoints
-    
+
     # 检测碰撞是否发生的范围
-    global ranges
-    ranges = [0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0]
-    
-    state = [False, False, False, False, False, False, False]
     distfront = 1.0
-    testpoints = [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]
-    
+    ranges = [i * 0.05 for i in range(21)]
+    state = [False, False, False, False, False, False, False]
+    testpoints = [[0.0, 0.0] for _ in range(7)]
+
     calcTestpoints()
 
 
@@ -28,26 +27,15 @@ def calcTestpoints():
     rotation_to_radians = radians(player.rotation)
     veinterad = radians(20)
 
-    testpoints[0][0] = 20 * cos(rotation_to_radians + PI / 2)
-    testpoints[0][1] = -20 * sin(rotation_to_radians + PI / 2)
+    angles = [PI / 2, PI / 4, veinterad, 0, -veinterad, -PI / 4, -PI / 2]
+    distances = [20, 40, 45, 50, 45, 40, 20]
 
-    testpoints[1][0] = 40 * cos(rotation_to_radians + PI / 4)
-    testpoints[1][1] = -40 * sin(rotation_to_radians + PI / 4)
-
-    testpoints[2][0] = 45 * cos(rotation_to_radians + veinterad)
-    testpoints[2][1] = -45 * sin(rotation_to_radians + veinterad)
+    for i in range(len(testpoints)):
+        testpoints[i][0] = distances[i] * cos(rotation_to_radians + angles[i])
+        testpoints[i][1] = -distances[i] * sin(rotation_to_radians + angles[i])
 
     testpoints[3][0] = 50 * player.dir[0]
     testpoints[3][1] = 50 * player.dir[1]
-
-    testpoints[4][0] = 45 * cos(rotation_to_radians - veinterad)
-    testpoints[4][1] = -45 * sin(rotation_to_radians - veinterad)
-
-    testpoints[5][0] = 40 * cos(rotation_to_radians - PI / 4)
-    testpoints[5][1] = -40 * sin(rotation_to_radians - PI / 4)
-
-    testpoints[6][0] = 20 * cos(rotation_to_radians - PI / 2)
-    testpoints[6][1] = -20 * sin(rotation_to_radians - PI / 2)
 
 
 # 绘制车头前面的7条碰撞检测线-无缩放
@@ -73,8 +61,8 @@ def renderTestlines():
             stroke(255, 255, 0)  # 黄色
         else:
             stroke(0)  # 黑色
-        line(width / 2, height / 2, width / 2 + testpoints[n][0] * render.displayscale,
-             height / 2 + testpoints[n][1] * render.displayscale)
+        line(width / 2, height / 2, width / 2 + testpoints[n][0] * render.scale,
+             height / 2 + testpoints[n][1] * render.scale)
 
 
 # 更新状态
