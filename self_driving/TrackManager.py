@@ -38,7 +38,7 @@ def init():
     initial_dir = [[0.0, -1.0], [0.0, -1.0], [0.0, -1.0], [0.0, -1.0]]
     initial_velocity = [1.0, 1.0, 1.0, 1.0]
     initial_rotation = [90.0, 90.0, 180.0, 270.0]
-    #######################################
+
     
 def ldTrack():
     global selectedTrack

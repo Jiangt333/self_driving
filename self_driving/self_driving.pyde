@@ -1,5 +1,3 @@
-# KartAI https://github.com/eritzyg/KartAI/
-
 import Global as glv
 import TrackManager as tm
 import Render as render
@@ -120,4 +118,3 @@ def keyPressed():
         tm.setTrack(track_index % tm.nTracks)
         glv.ForceReset = True
         print("Loaded track: " + tm.tracknames[tm.selectedTrack])
-
