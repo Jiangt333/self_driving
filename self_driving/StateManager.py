@@ -1,5 +1,6 @@
 # coding=UTF-8
 
+import Global as glv
 import Render as render
 import Player as player
 import TrackManager as tm
@@ -80,8 +81,7 @@ def checkColl(n):
     global distfront
 
     for i in range(0, len(ranges)):
-        if (
-        not render.getTrackmap(player.posx + ranges[i] * testpoints[n][0], player.posy + ranges[i] * testpoints[n][1])):
+        if (not getTrackmap(player.posx + ranges[i] * testpoints[n][0], player.posy + ranges[i] * testpoints[n][1])):
             if (n == 3):
                 # 在QLearning中获得奖赏时有用
                 distfront = ranges[i]
@@ -90,3 +90,18 @@ def checkColl(n):
         # 在QLearning中获得奖赏时有用
         distfront = 1.0
     return False
+
+# 取赛道地图上指定位置 (x, y) 处的信息，检测该像素点是否可通过
+def getTrackmap(x, y):
+    # trackmap被禁用就返回True
+    if (not glv.EnableTrackmap):
+        return True
+
+    c = render.trackmap.pixels[int(x) + int(y) * 1024]
+
+    if (floor(red(c)) <= 15 and floor(green(c)) >= 240):
+        # (0, 255, *) 这样的颜色（*表示任意值），表示这个位置可通过
+        return True
+    else:
+        # 其他像素点颜色不可通过
+        return False
