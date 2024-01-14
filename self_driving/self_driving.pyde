@@ -74,11 +74,13 @@ def keyPressed():
             # AI玩
             player.isAI = True
             player.flag = False
+            print("you are AI!")
             qlearn.qTable = qlearn.loadQTableFromFile()
         if key == 'k' or key == 'K':
             # 人玩
             player.isAI = False
             player.flag = False
+            print("you are people!")
 
     if player.isAI:
         if key == 'i' or key == 'I':
