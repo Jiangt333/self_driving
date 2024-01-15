@@ -1,15 +1,14 @@
 # coding=UTF-8
 
-import Global as glv
+import Global as gModel
 import Player as player
-import StateManager as sm
-import TrackManager as tm
-import QLearning as qlearn
+import State as stateModel
+import Track as trackModel
+import QLearning as qModel
 
 def init():
     # 字体
     global font
-    font = createFont("Hooge0553", 18)
 
     # 车辆、赛道、赛道底图
     global car
@@ -18,16 +17,31 @@ def init():
 
     # 缩放比例
     global scale
-    # 设置缩放比例（整数）
+
+    # 设置缩放比例（整数）与字体
     scale = 3
+    font = createFont("Hooge0553", 18)
 
     # 加载小车图像
     car = loadImage("car.png")
-    tm.initrender()
+
+    # 进行渲染
+    trackModel.initrender()
+
+
+def bordersText(txt, x, y):
+    offsets = [(-1, 0), (-1, -1), (0, -1), (1, 0), (1, 1), (0, 1)]  # 不同方向的偏移
+
+    fill(0)  # 设置文本的填充颜色为黑色
+    for offset in offsets:
+        text(txt, x + offset[0], y + offset[1])
+
+    fill(255)  # 设置文本的填充颜色为白色
+    text(txt, x, y)  # 在原始位置绘制文本
 
 
 # 渲染模式，进行缩放
-def drawSpritesAltRenderer():
+def AltRenderer():
     # 车辆、赛道
     global car
     global track
@@ -41,19 +55,19 @@ def drawSpritesAltRenderer():
     # 显示车辆
     pushMatrix()
     translate(width / 2, height / 2)
-    rotate(radians(90.0 - player.rotation))
-    rotate(radians(-player.innerce))
+    rotate(radians(90.0 - player.r))
+    rotate(radians(-player.bias))
     translate(-width / 2, -height / 2)
     image(car, (width / 2) - 10 * scale, (height / 2) - 22 * scale, 21 * scale, 45 * scale)
     popMatrix()
 
-    # 绘制车头前面的7条碰撞检测线
-    if (glv.collisionLineFlag):
-        sm.renderTestlines()
+    # 绘制7条碰撞检测线
+    if (gModel.collisionLineFlag):
+        stateModel.Testlines()
 
 
 # 渲染模式，未进行了缩放，原始尺寸显示
-def drawSpritesNoScaleAltRenderer():
+def NoAltRenderer():
     # 车辆，赛道
     global car
     global track
@@ -64,18 +78,18 @@ def drawSpritesNoScaleAltRenderer():
     # 显示车辆
     pushMatrix()
     translate(width / 2, height / 2)
-    rotate(radians(90.0 - player.rotation))
-    rotate(radians(-player.innerce))
+    rotate(radians(90.0 - player.r))
+    rotate(radians(-player.bias))
     translate(-width / 2, -height / 2)
     image(car, (width / 2) - 10, (height / 2) - 22)
     popMatrix()
 
-    # 绘制车头前面的7条碰撞检测线
-    if (glv.collisionLineFlag):
-        sm.renderTestlinesNoScale()
+    # 绘制7条碰撞检测线
+    if (gModel.collisionLineFlag):
+        stateModel.NoScaleTestlines()
 
 # 提示信息
-def drawHUD():
+def drawBegin():
     # 字体
     global font
 
@@ -83,30 +97,18 @@ def drawHUD():
     if (player.flag == True):
         textFont(font, 50)
         textAlign(CENTER, CENTER)
-        textWithBorders(
-            "Tip:  Before playing, choose your player \n which 'j' or 'J' is AI play and 'k' or 'K' is people play",
-            670, 300)
+        bordersText("Tip:  Before playing, choose your player \n which 'j' or 'J' is AI play and 'k' or 'K' is people play", 670, 300)
 
 
-def drawTimer():
+def drawPrompt():
     global font
 
     # 右上角信息显示
     textFont(font, 18)
     textAlign(RIGHT)
-    textWithBorders(tm.tracknames[tm.selectedTrack], width - 23, 20)
-    textWithBorders("EPOCH " + str(glv.Try), width - 23, 40)
-    textWithBorders("TIME " + str(int(player.frames)), width - 23, 60)
-    textWithBorders("BEST TIME " + str(int(player.best)), width - 23, 80)
-    textWithBorders("REWARD " + str(int(qlearn.scores)), width - 23, 100)
+    bordersText(trackModel.trackNames[trackModel.sTrack], width - 23, 20)
+    bordersText("EPOCH " + str(gModel.Try), width - 23, 40)
+    bordersText("TIME " + str(int(player.frames)), width - 23, 60)
+    bordersText("BEST TIME " + str(int(player.best)), width - 23, 80)
+    bordersText("REWARD " + str(int(qModel.scores)), width - 23, 100)
 
-
-def textWithBorders(txt, x, y):
-    offsets = [(-1, 0), (-1, -1), (0, -1), (1, 0), (1, 1), (0, 1)]  # 不同方向的偏移
-
-    fill(0)  # 设置文本的填充颜色为黑色
-    for offset in offsets:
-        text(txt, x + offset[0], y + offset[1])
-
-    fill(255)  # 设置文本的填充颜色为白色
-    text(txt, x, y)  # 在原始位置绘制文本

@@ -1,21 +1,20 @@
 # coding=UTF-8
 
-import Global as glv
 import Player as player
-import StateManager as sm
+import State as stateModel
 
 
 def init():
     # q-learning的超参数
     global scores
     global qTable
-    global alpha_
-    global gama_
+    global alpha
+    global gamma
 
     scores = 0.0
-    qTable = [[0.0 for x in range(3)] for y in range(int(2 ** (len(sm.state))))]
-    alpha_ = 0.6
-    gama_ = 0.4
+    qTable = [[0.0 for x in range(3)] for y in range(int(2 ** (len(stateModel.state))))]
+    alpha = 0.1
+    gamma = 0.9
 
 
 # 奖赏函数
@@ -25,9 +24,9 @@ def getReward(action):
     # 初始 0 分
     scores = 0.0
     if (player.isAlive):
-        if any(sm.state):
+        if any(stateModel.state):
             # 如果有碰撞检测线点未检测出碰撞，给出对应分数
-            scores = 5.0 - (1.0 - sm.distfront) * 60.0
+            scores = 5.0 - (1.0 - stateModel.distFront) * 60.0
         else:
             # 如果所有检测线都没有检测出碰撞
             if (action == 0):
@@ -63,8 +62,8 @@ def loadQTableFromFile():
 # 计算状态
 def calcstate():
     st = 0
-    for n in range(0, len(sm.state)):
-        st = st + (2 ** n) * int(sm.state[n])
+    for n in range(0, len(stateModel.state)):
+        st = st + (2 ** n) * int(stateModel.state[n])
     return st
 
 
@@ -100,14 +99,14 @@ def perform_action(action):
     player.run()
     player.updatePos()
     player.checkBounds()
-    sm.calcTestpoints()
-    sm.updateState()
+    stateModel.calcTestpoints()
+    stateModel.updateState()
 
 
 def qlearn():
-    global qTable  # Q-table
-    global alpha_  # 学习率
-    global gama_  # 折扣因子
+    global qTable   # Q-table
+    global alpha    # 学习率
+    global gamma    # 折扣因子
 
     current_state = calcstate()  # 得到当前状态
     action = select_action(current_state, True)  # 为当前状态选择动作（行为策略：ε-greedy）
@@ -121,4 +120,4 @@ def qlearn():
     faction = select_action(fstate, False)
 
     # 更新Q-table
-    qTable[current_state][action] = qTable[current_state][action] + alpha_ * (reward + gama_ * qTable[fstate][faction] - qTable[current_state][action])
+    qTable[current_state][action] = qTable[current_state][action] + alpha * (reward + gamma * qTable[fstate][faction] - qTable[current_state][action])

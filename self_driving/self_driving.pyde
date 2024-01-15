@@ -1,20 +1,21 @@
-import Global as glv
-import TrackManager as tm
-import Render as render
+import Global as gModel
+import Track as trackModel
+import State as stateModel
+import Render as renderModel
+
 import Player as player
-import StateManager as sm
-import QLearning as qlearn
+import QLearning as qModel
+
 
 def setup():
     # 初始化：设置画布大小，初始化各种模块和参数
     size(1280, 720)
-
-    glv.init()
-    tm.init()
-    render.init()
+    gModel.init()
+    trackModel.init()
+    renderModel.init()
     player.init()
-    sm.init()
-    qlearn.init()
+    stateModel.init()
+    qModel.init()
 
      # 设置帧速率为999帧每秒
     frameRate(999)
@@ -24,48 +25,47 @@ def setup():
     # 加载画布上的像素数据到程序中
     loadPixels()
     # 加载赛道地图的像素数据
-    render.trackBaseMap.loadPixels()
+    renderModel.trackBaseMap.loadPixels()
     
 def draw():
-    glv.eventTimeDelta = 1.0/frameRate
+    gModel.eventTimeDelta = 1.0/frameRate
 
     # 画布的背景设置为黑色
     background(0)
-    if (not glv.scalingFlag):
-        render.drawSpritesAltRenderer()
+    if (not gModel.scalingFlag):
+        renderModel.AltRenderer()
     else:
-        render.drawSpritesNoScaleAltRenderer()
-    
-    # AI actions and physics
+        renderModel.NoAltRenderer()
+
     if(player.flag == False):
         if (player.isAlive):
             # 玩家是电脑，则开启训练模式
             if (player.isAI):
-                qlearn.qlearn()     # 学习
-                if (glv.forceReset):
+                qModel.qlearn()     # 学习
+                if (gModel.forceReset):
                     player.resetGame()
                 if (not player.isAlive):
-                    print("-AI died in try "+str(glv.Try)+". Timestamp: "+str(player.frames)+" frames.")
-                    glv.Try = glv.Try+1
+                    print("-AI died in try "+str(gModel.Try)+". Timestamp: "+str(player.frames)+" frames.")
+                    gModel.Try = gModel.Try+1
                     player.resetGame()
-                if (glv.Try + glv.STry) % 30 == 0:
-                    qlearn.saveQTableToFile()
+                if (gModel.Try + gModel.STry) % 30 == 0:
+                    qModel.saveQTableToFile()
             # 玩家是人
             else:
                 player.run()
                 player.updatePos()
                 player.checkBounds()
-                sm.calcTestpoints()
-                sm.updateState()
-                if (not player.isAlive or glv.forceReset):
+                stateModel.calcTestpoints()
+                stateModel.updateState()
+                if (not player.isAlive or gModel.forceReset):
                     player.resetGame()
     
-    # Render HUD
-    if (glv.promptDisplay):
-        render.drawHUD()
-        render.drawTimer()
+    # 信息显示
+    if (gModel.promptDisplay):
+        renderModel.drawBegin()
+        renderModel.drawPrompt()
 
-# player handler
+# 键盘控件
 def keyPressed():
     # 游戏开始前选择玩家是AI自动玩还是人玩
     if(player.flag == True):
@@ -74,7 +74,7 @@ def keyPressed():
             player.isAI = True
             player.flag = False
             print("you are AI!")
-            qlearn.qTable = qlearn.loadQTableFromFile()
+            qModel.qTable = qModel.loadQTableFromFile()
         if key == 'k' or key == 'K':
             # 人玩
             player.isAI = False
@@ -83,7 +83,7 @@ def keyPressed():
 
     if player.isAI:
         if key == 'i' or key == 'I':
-            qlearn.qTable = [[0.0 for x in range(3)] for y in range(int(2**(len(sm.state))))]
+            qModel.qTable = [[0.0 for x in range(3)] for y in range(int(2**(len(stateModel.state))))]
             print("Q_Table has been initialized")
 
     if not player.isAI:
@@ -97,23 +97,23 @@ def keyPressed():
             player.deccel()
         if key == 'q' or key == 'Q':
             player.driftLeft()
-            player.velocity = player.velocity-0.1
+            player.v = player.v-0.1
         if key == 'e' or key == 'E':
             player.driftRight()
-            player.velocity = player.velocity-0.1
+            player.v = player.v-0.1
         if key == ' ':
             player.reset()
 
     if key == 'z' or key == 'Z':
-        glv.scalingFlag = not glv.scalingFlag
+        gModel.scalingFlag = not gModel.scalingFlag
     if key == 'h' or key == 'H':
-        glv.promptDisplay = not glv.promptDisplay
+        gModel.promptDisplay = not gModel.promptDisplay
     if key == 'l' or key == 'L':
-        glv.collisionLineFlag = not glv.collisionLineFlag
+        gModel.collisionLineFlag = not gModel.collisionLineFlag
 
 
     if key == '1' or key == '2' or key == '3' or key == '4':
         track_index = int(key) - 1
-        tm.setTrack(track_index % tm.nTracks)
-        glv.forceReset = True
-        print("Loaded track: " + tm.tracknames[tm.selectedTrack])
+        trackModel.setTrack(track_index % trackModel.nTracks)
+        gModel.forceReset = True
+        print("Loaded track: " + trackModel.trackNames[trackModel.sTrack])
