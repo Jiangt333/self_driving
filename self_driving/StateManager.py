@@ -93,7 +93,7 @@ def checkColl(n):
 
 # 取赛道地图上指定位置 (x, y) 处的信息，检测该像素点是否可通过
 def getTrackmap(x, y):
-    c = render.trackmap.pixels[int(x) + int(y) * 1024]
+    c = render.trackBaseMap.pixels[int(x) + int(y) * 1024]
 
     if (floor(red(c)) <= 15 and floor(green(c)) >= 240):
         # (0, 255, *) 这样的颜色（*表示任意值），表示这个位置可通过

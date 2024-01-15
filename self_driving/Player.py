@@ -94,7 +94,7 @@ def getTrackmap():
     global current_sector
 
     # 获取小车中心点的像素信息
-    c = render.trackmap.pixels[int(posx) + int(posy) * 1024]
+    c = render.trackBaseMap.pixels[int(posx) + int(posy) * 1024]
 
     if (floor(red(c)) <= 15 and floor(green(c)) >= 240):
         # 判断是否成功越过终点线

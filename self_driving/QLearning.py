@@ -121,5 +121,4 @@ def qlearn():
     faction = select_action(fstate, False)
 
     # 更新Q-table
-    qTable[current_state][action] = qTable[current_state][action] + alpha_ * (
-                reward + gama_ * qTable[fstate][faction] - qTable[current_state][action])
+    qTable[current_state][action] = qTable[current_state][action] + alpha_ * (reward + gama_ * qTable[fstate][faction] - qTable[current_state][action])

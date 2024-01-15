@@ -11,10 +11,10 @@ def init():
     global font
     font = createFont("Hooge0553", 18)
 
-    # 车辆、赛道、赛道区域地图
+    # 车辆、赛道、赛道底图
     global car
     global track
-    global trackmap
+    global trackBaseMap
 
     # 缩放比例
     global scale

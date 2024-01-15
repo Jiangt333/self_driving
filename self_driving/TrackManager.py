@@ -8,8 +8,8 @@ def init():
     global selectedTrack
     global nTracks
     global tracknames
-    global track_sprites
-    global trackmap_sprites
+    global trackSprite
+    global trackBaseMapSprite
     global initial_posx
     global initial_posy
     global initial_dir
@@ -23,12 +23,12 @@ def init():
                   "Map 3",
                   "Map 4"]
 
-    track_sprites = ["model_1.png",
+    trackSprite = ["model_1.png",
                      "model_2.png",
                      "model_3.png",
                      "model_4.png"]
 
-    trackmap_sprites = ["model_1_map.png",
+    trackBaseMapSprite  = ["model_1_map.png",
                         "model_2_map.png",
                         "model_3_map.png",
                         "model_4_map.png"]
@@ -43,8 +43,8 @@ def init():
 def ldTrack():
     global selectedTrack
     global nTracks
-    global track_sprites
-    global trackmap_sprites
+    global trackSprite
+    global trackBaseMapSprite 
     global initial_posx
     global initial_posy
     global initial_dir
@@ -53,8 +53,8 @@ def ldTrack():
     
     if (selectedTrack >= nTracks):
         selectedTrack = 0
-    render.track = loadImage(track_sprites[selectedTrack])
-    render.trackmap = loadImage(trackmap_sprites[selectedTrack])
+    render.track = loadImage(trackSprite[selectedTrack])
+    render.trackBaseMap = loadImage(trackBaseMapSprite [selectedTrack])
     player.posx = initial_posx[selectedTrack]
     player.posy = initial_posy[selectedTrack]
     player.dir = initial_dir[selectedTrack]
@@ -83,13 +83,13 @@ def initrender():
     global selectedTrack
     global tracknames
     global nTracks
-    global track_sprites
-    global trackmap_sprites
+    global trackSprite
+    global trackBaseMapSprite 
     
     if (selectedTrack >= nTracks): 
         selectedTrack = 0
-    render.track = loadImage(track_sprites[selectedTrack])
-    render.trackmap = loadImage(trackmap_sprites[selectedTrack])
+    render.track = loadImage(trackSprite[selectedTrack])
+    render.trackBaseMap = loadImage(trackBaseMapSprite [selectedTrack])
     print("Loaded track: "+tracknames[selectedTrack])
 
 def setTrack(number):

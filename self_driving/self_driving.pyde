@@ -24,7 +24,7 @@ def setup():
     # 加载画布上的像素数据到程序中
     loadPixels()
     # 加载赛道地图的像素数据
-    render.trackmap.loadPixels()
+    render.trackBaseMap.loadPixels()
     
 def draw():
     glv.eventTimeDelta = 1.0/frameRate
