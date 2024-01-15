@@ -37,8 +37,6 @@ def drawSpritesAltRenderer():
 
     # 显示赛道
     image(track, -(player.posx * scale) + (width / 2), -(player.posy * scale) + (height / 2), 1024 * scale, 1024 * scale)
-    if (glv.renderTrackmap):
-        image(trackmap, -(player.posx * scale) + (width / 2), -(player.posy * scale) + (height / 2), 1024 * scale, 1024 * scale)
 
     # 显示车辆
     pushMatrix()
@@ -50,7 +48,7 @@ def drawSpritesAltRenderer():
     popMatrix()
 
     # 绘制车头前面的7条碰撞检测线
-    if (glv.renderCollisionLines):
+    if (glv.collisionLineFlag):
         sm.renderTestlines()
 
 
@@ -62,8 +60,6 @@ def drawSpritesNoScaleAltRenderer():
 
     # 显示赛道
     image(track, -player.posx + (width / 2), -player.posy + (height / 2))
-    if (glv.renderTrackmap):
-        image(trackmap, -player.posx + (width / 2), -player.posy + (height / 2))
 
     # 显示车辆
     pushMatrix()
@@ -75,7 +71,7 @@ def drawSpritesNoScaleAltRenderer():
     popMatrix()
 
     # 绘制车头前面的7条碰撞检测线
-    if (glv.renderCollisionLines):
+    if (glv.collisionLineFlag):
         sm.renderTestlinesNoScale()
 
 # 提示信息

@@ -21,18 +21,17 @@ def setup():
 
     # 关闭平滑处理
     noSmooth()
-    if (glv.EnableTrackmap):
-        # 加载画布上的像素数据到程序中
-        loadPixels()
-        # 加载赛道地图的像素数据
-        render.trackmap.loadPixels()
+    # 加载画布上的像素数据到程序中
+    loadPixels()
+    # 加载赛道地图的像素数据
+    render.trackmap.loadPixels()
     
 def draw():
-    glv.eventDelta = 1.0/frameRate
+    glv.eventTimeDelta = 1.0/frameRate
 
     # 画布的背景设置为黑色
     background(0)
-    if (not glv.disableScaling):
+    if (not glv.scalingFlag):
         render.drawSpritesAltRenderer()
     else:
         render.drawSpritesNoScaleAltRenderer()
@@ -43,7 +42,7 @@ def draw():
             # 玩家是电脑，则开启训练模式
             if (player.isAI):
                 qlearn.qlearn()     # 学习
-                if (glv.ForceReset):
+                if (glv.forceReset):
                     player.resetGame()
                 if (not player.isAlive):
                     print("-AI died in try "+str(glv.Try)+". Timestamp: "+str(player.frames)+" frames.")
@@ -58,11 +57,11 @@ def draw():
                 player.checkBounds()
                 sm.calcTestpoints()
                 sm.updateState()
-                if (not player.isAlive or glv.ForceReset):
+                if (not player.isAlive or glv.forceReset):
                     player.resetGame()
     
     # Render HUD
-    if (glv.HUDEnabled):
+    if (glv.promptDisplay):
         render.drawHUD()
         render.drawTimer()
 
@@ -106,17 +105,15 @@ def keyPressed():
             player.reset()
 
     if key == 'z' or key == 'Z':
-        glv.disableScaling = not glv.disableScaling
+        glv.scalingFlag = not glv.scalingFlag
     if key == 'h' or key == 'H':
-        glv.HUDEnabled = not glv.HUDEnabled
-    if key == 'm' or key == 'M':
-        glv.renderTrackmap = not glv.renderTrackmap
+        glv.promptDisplay = not glv.promptDisplay
     if key == 'l' or key == 'L':
-        glv.renderCollisionLines = not glv.renderCollisionLines
+        glv.collisionLineFlag = not glv.collisionLineFlag
 
 
     if key == '1' or key == '2' or key == '3' or key == '4':
         track_index = int(key) - 1
         tm.setTrack(track_index % tm.nTracks)
-        glv.ForceReset = True
+        glv.forceReset = True
         print("Loaded track: " + tm.tracknames[tm.selectedTrack])

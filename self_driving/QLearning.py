@@ -14,8 +14,8 @@ def init():
 
     scores = 0.0
     qTable = [[0.0 for x in range(3)] for y in range(int(2 ** (len(sm.state))))]
-    alpha_ = 0.1
-    gama_ = 0.9
+    alpha_ = 0.6
+    gama_ = 0.4
 
 
 # 奖赏函数
@@ -114,14 +114,12 @@ def qlearn():
     perform_action(action)  # 执行动作
 
     # 更新Q-table
-    if (not glv.BlockLearning):
-        reward = getReward(action)  # 采样得到奖赏
+    reward = getReward(action)  # 采样得到奖赏
 
-        fstate = calcstate()  # 得到跳转到的下一个状态
-        # 更新Q-table时选择maxq对应的动作（目标策略：greedy）
-        faction = select_action(fstate, False)
+    fstate = calcstate()  # 得到跳转到的下一个状态
+    # 更新Q-table时选择maxq对应的动作（目标策略：greedy）
+    faction = select_action(fstate, False)
 
-        # 更新Q-table
-        qTable[current_state][action] = qTable[current_state][action] + alpha_ * (
-                    reward + gama_ * qTable[fstate][faction] - qTable[current_state][action])
-
+    # 更新Q-table
+    qTable[current_state][action] = qTable[current_state][action] + alpha_ * (
+                reward + gama_ * qTable[fstate][faction] - qTable[current_state][action])

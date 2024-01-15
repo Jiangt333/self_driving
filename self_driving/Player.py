@@ -71,12 +71,12 @@ def updatePos():
     posy = posy + dir[1] * velocity  # 根据Y方向上的方向向量和速度更新Y坐标
 
     # 偏移重置计算
-    if (glv.press == 0):
+    if (glv.pressKey == 0):
         innerce = 9.0 / 10.0 * innerce  # 根据偏移的十分之一减小偏移
         if (-1e-4 < innerce < 1e-4):
             innerce = 0.0
-    if (glv.press > 0):
-        glv.press = glv.press - 1  # 如果按键按下，减小按键按下的计数
+    if (glv.pressKey > 0):
+        glv.pressKey = glv.pressKey - 1  # 如果按键按下，减小按键按下的计数
 
 
 # 检查玩家是否存活
@@ -84,7 +84,7 @@ def checkBounds():
     global posx
     global posy
     global isAlive
-    if (glv.EnableTrackmap and not getTrackmap()):
+    if (not getTrackmap()):
         isAlive = False
 
 # 获取车道信息
@@ -93,23 +93,20 @@ def getTrackmap():
     global posy
     global current_sector
 
-    # 如果被禁用，将始终返回True
-    if (not glv.EnableTrackmap):
-        return True
     # 获取小车中心点的像素信息
     c = render.trackmap.pixels[int(posx) + int(posy) * 1024]
 
     if (floor(red(c)) <= 15 and floor(green(c)) >= 240):
         # 判断是否成功越过终点线
         if (floor(blue(c)) >= 240):
-            glv.FLC = True
+            glv.passFlag = True
         else:
-            if (glv.FLC):
+            if (glv.passFlag):
                 glv.STry = glv.STry + 1
                 print(" # Finish line crossed at try " + str(glv.Try))
                 print(" # Timestamp: " + str(frames) + " frames.")
                 print(" # Total Successful laps: " + str(glv.STry) + ". ")
-                glv.FLC = False
+                glv.passFlag = False
         return True
     else:
         return False
@@ -122,7 +119,7 @@ def turnLeft():
     if (not isAlive):
         return
     # 设置状态为2
-    glv.press = 2
+    glv.pressKey = 2
     if (innerce < 30.0):
         if (innerce < 0.0):
             innerce = innerce + 25.0
@@ -135,7 +132,7 @@ def turnRight():
     if (not isAlive):
         return
     # 设置状态为2
-    glv.press = 2
+    glv.pressKey = 2
     if (innerce > -30.0):
         if (innerce > 0.0):
             innerce = innerce - 25.0
@@ -150,7 +147,7 @@ def driftLeft():
     if (not isAlive):
         return
     # 设置状态为2
-    glv.press = 2
+    glv.pressKey = 2
     if (innerce < 30.0):
         if (innerce < 0.0):
             innerce = innerce + 25.0
@@ -166,7 +163,7 @@ def driftRight():
     if (not isAlive):
         return
     # 设置状态为2
-    glv.press = 2
+    glv.pressKey = 2
     if (innerce > -30.0):
         if (innerce > 0.0):
             innerce = innerce - 25.0
@@ -208,9 +205,9 @@ def resetGame():
     # 玩家状态设为存活
     isAlive = True
     # 按键状态设为0
-    glv.press = 0
+    glv.pressKey = 0
     # 强制重置标志设为False
-    glv.ForceReset = False
+    glv.forceReset = False
 
 # 开始游戏
 def startt():

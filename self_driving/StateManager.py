@@ -93,10 +93,6 @@ def checkColl(n):
 
 # 取赛道地图上指定位置 (x, y) 处的信息，检测该像素点是否可通过
 def getTrackmap(x, y):
-    # trackmap被禁用就返回True
-    if (not glv.EnableTrackmap):
-        return True
-
     c = render.trackmap.pixels[int(x) + int(y) * 1024]
 
     if (floor(red(c)) <= 15 and floor(green(c)) >= 240):
