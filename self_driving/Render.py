@@ -6,6 +6,7 @@ import State as stateModel
 import Track as trackModel
 import QLearning as qModel
 
+
 def init():
     # 字体
     global font
