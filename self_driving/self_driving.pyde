@@ -1,15 +1,16 @@
+import Player as player
 import Global as gModel
+import QLearning as qModel
 import Track as trackModel
 import State as stateModel
 import Render as renderModel
 
-import Player as player
-import QLearning as qModel
-
 
 def setup():
-    # 初始化：设置画布大小，初始化各种模块和参数
+    # 初始化：设置画布大小
     size(1280, 720)
+
+    # 初始化各模块
     gModel.init()
     trackModel.init()
     renderModel.init()
@@ -26,7 +27,8 @@ def setup():
     loadPixels()
     # 加载赛道地图的像素数据
     renderModel.trackBaseMap.loadPixels()
-    
+
+
 def draw():
     gModel.eventTimeDelta = 1.0/frameRate
 
@@ -41,7 +43,7 @@ def draw():
         if (player.isAlive):
             # 玩家是电脑，则开启训练模式
             if (player.isAI):
-                qModel.qlearn()     # 学习
+                qModel.qLearn()     # 学习
                 if (gModel.forceReset):
                     player.resetGame()
                 if (not player.isAlive):
