@@ -8,23 +8,18 @@ import QLearning as qModel
 
 
 def init():
-    # 字体
-    global font
+    # 字体与缩放比例
+    global font, scale
 
     # 车辆、赛道、赛道底图
-    global car
-    global track
-    global trackBaseMap
+    global car, track, trackBaseMap
 
-    # 缩放比例
-    global scale
+    # 加载小车图像
+    car = loadImage("car.png")
 
     # 设置缩放比例（整数）与字体
     scale = 3
     font = createFont("Hooge0553", 18)
-
-    # 加载小车图像
-    car = loadImage("car.png")
 
     # 进行渲染
     trackModel.initrender()
@@ -41,14 +36,31 @@ def bordersText(txt, x, y):
     text(txt, x, y)  # 在原始位置绘制文本
 
 
+# 提示信息
+def drawBegin():
+    global font
+    # 开始游戏的指南
+    if (player.flag == True):
+        textFont(font, 50)
+        textAlign(CENTER, CENTER)
+        bordersText("Tip:  Before playing, choose your player \n which 'j' or 'J' is AI play and 'k' or 'K' is people play", 670, 300)
+
+
+def drawPrompt():
+    global font
+    # 右上角信息显示
+    textFont(font, 18)
+    textAlign(RIGHT)
+    bordersText(trackModel.trackNames[trackModel.sTrack], width - 23, 20)
+    bordersText("EPOCH " + str(gModel.Try), width - 23, 40)
+    bordersText("TIME " + str(int(player.frames)), width - 23, 60)
+    bordersText("BEST TIME " + str(int(player.best)), width - 23, 80)
+    bordersText("REWARD " + str(int(qModel.scores)), width - 23, 100)
+
+
 # 渲染模式，进行缩放
 def AltRenderer():
-    # 车辆、赛道
-    global car
-    global track
-
-    # 缩放比例
-    global scale
+    global car, track, scale
 
     # 显示赛道
     image(track, -(player.posx * scale) + (width / 2), -(player.posy * scale) + (height / 2), 1024 * scale, 1024 * scale)
@@ -69,9 +81,7 @@ def AltRenderer():
 
 # 渲染模式，未进行了缩放，原始尺寸显示
 def NoAltRenderer():
-    # 车辆，赛道
-    global car
-    global track
+    global car, track
 
     # 显示赛道
     image(track, -player.posx + (width / 2), -player.posy + (height / 2))
@@ -89,27 +99,4 @@ def NoAltRenderer():
     if (gModel.collisionLineFlag):
         stateModel.NoScaleTestlines()
 
-# 提示信息
-def drawBegin():
-    # 字体
-    global font
-
-    # 开始游戏的指南
-    if (player.flag == True):
-        textFont(font, 50)
-        textAlign(CENTER, CENTER)
-        bordersText("Tip:  Before playing, choose your player \n which 'j' or 'J' is AI play and 'k' or 'K' is people play", 670, 300)
-
-
-def drawPrompt():
-    global font
-
-    # 右上角信息显示
-    textFont(font, 18)
-    textAlign(RIGHT)
-    bordersText(trackModel.trackNames[trackModel.sTrack], width - 23, 20)
-    bordersText("EPOCH " + str(gModel.Try), width - 23, 40)
-    bordersText("TIME " + str(int(player.frames)), width - 23, 60)
-    bordersText("BEST TIME " + str(int(player.best)), width - 23, 80)
-    bordersText("REWARD " + str(int(qModel.scores)), width - 23, 100)
 

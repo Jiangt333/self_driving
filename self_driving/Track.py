@@ -5,17 +5,12 @@ import Render as renderModel
 import State as stateModel
 
 def init():
-    global init_v       # 初始速度
-    global init_r       # 初始角度
-    global sTrack       # 选择的地图
-    global nTracks      # 地图总数
-    global init_dir
-    global init_posx    # 初始化x坐标
-    global init_posy    # 初始化y坐标
-    global trackNames   # 地图名称
-    global trackTopMap
-    global trackBaseMap
+    global init_v, init_r                           # 初始速度与角度
+    global nTracks, sTrack                          # 地图总数与选择的地图
+    global init_dir, init_posx, init_posy           # 初始化方向和x,y坐标
+    global trackNames, trackTopMap, trackBaseMap    # 地图名称, 顶图, 底图
 
+    # 初始化
     sTrack = 0
     nTracks = 4
     trackNames = ["Map 1",
@@ -45,64 +40,67 @@ def init():
 
     init_r = [90.0, 90.0, 180.0, 270.0]
 
-    
+
+# 导入地图
 def ldTrack():
-    global sTrack
-    global nTracks
-    global trackTopMap
-    global trackBaseMap
-    global init_posx
-    global init_posy
-    global init_dir
-    global init_v
-    global init_r
-    
+    global init_v, init_r
+    global sTrack, nTracks
+    global trackTopMap, trackBaseMap
+    global init_posx, init_posy, init_dir
+
     if (sTrack >= nTracks):
         sTrack = 0
+    # 导入图片进行渲染
     renderModel.track = loadImage(trackTopMap[sTrack])
     renderModel.trackBaseMap = loadImage(trackBaseMap[sTrack])
 
-    player.posx = init_posx[sTrack]
-    player.posy = init_posy[sTrack]
-    player.dir = init_dir[sTrack]
+    # 初始化玩家参数
     player.v = init_v[sTrack]
     player.r = init_r[sTrack]
+    player.dir = init_dir[sTrack]
+    player.posx = init_posx[sTrack]
+    player.posy = init_posy[sTrack]
+
+    # 初始化状态
     stateModel.init()
-    
+
+
+# 初始化玩家
 def initplayer():
-    global sTrack
-    global nTracks
-    global init_posx
-    global init_posy
-    global init_dir
-    global init_v
-    global init_r
-    
+    global init_v, init_r
+    global sTrack, nTracks
+    global init_posx, init_posy, init_dir
+
     if (sTrack >= nTracks):
         sTrack = 0
-    player.posx = init_posx[sTrack]
-    player.posy = init_posy[sTrack]
-    player.dir = init_dir[sTrack]
+
+    # 初始化赋值
     player.v = init_v[sTrack]
     player.r = init_r[sTrack]
-    
+    player.dir = init_dir[sTrack]
+    player.posx = init_posx[sTrack]
+    player.posy = init_posy[sTrack]
+
+
+# 初始化渲染器
 def initrender():
-    global sTrack
-    global trackNames
-    global nTracks
-    global trackTopMap
-    global trackBaseMap
-    
+    global sTrack, nTracks
+    global trackNames, trackTopMap,trackBaseMap
+
     if (sTrack >= nTracks):
         sTrack = 0
+
+    # 地图导入并渲染
     renderModel.track = loadImage(trackTopMap[sTrack])
     renderModel.trackBaseMap = loadImage(trackBaseMap[sTrack])
     print("Loaded track: "+trackNames[sTrack])
 
+
+# 更换地图
 def setTrack(number):
-    global sTrack
-    global nTracks
-    
+    global sTrack, nTracks
+
     if (number >= nTracks or number < 0):
         return
+
     sTrack = number

@@ -5,16 +5,13 @@ import Player as player
 
 def init():
     # 状态变量
-    global state
-    global ranges
-    global distFront
-    global testPoints
+    global state, ranges, distFront, testPoints
 
     # 检测碰撞是否发生的范围
     distFront = 1.0
     ranges = [i * 0.05 for i in range(21)]
-    state = [False, False, False, False, False, False, False]
     testPoints = [[0.0, 0.0] for _ in range(7)]
+    state = [False, False, False, False, False, False, False]
 
     calcTestpoints()
 
@@ -39,8 +36,7 @@ def calcTestpoints():
 
 # 绘制车头前面的7条碰撞检测线-无缩放
 def NoScaleTestlines():
-    global state
-    global testPoints
+    global state, testPoints
 
     for n in range(0, len(testPoints)):
         if (state[n]):
@@ -52,51 +48,50 @@ def NoScaleTestlines():
 
 # 绘制车头前面的7条碰撞检测线-有缩放
 def Testlines():
-    global state
-    global testPoints
+    global state, testPoints
 
     for n in range(0, len(testPoints)):
         if (state[n]):
             stroke(255, 255, 0)  # 黄色
         else:
             stroke(0)  # 黑色
-        line(width / 2, height / 2, width / 2 + testPoints[n][0] * renderModel.scale,
-             height / 2 + testPoints[n][1] * renderModel.scale)
+        line(width / 2, height / 2, width / 2 + testPoints[n][0] * renderModel.scale, height / 2 + testPoints[n][1] * renderModel.scale)
 
 
 # 更新状态
 def updateState():
     global state
-
     for n in range(0, len(testPoints)):
         state[n] = checkColl(n)
 
 
 # 检查该碰撞检测点是否发生碰撞
 def checkColl(n):
-    global testPoints
-    global ranges
-    global distFront
+    global ranges, testPoints, distFront
 
     for i in range(0, len(ranges)):
-        if (not getTrackmap(player.posx + ranges[i] * testPoints[n][0], player.posy + ranges[i] * testPoints[n][1])):
-            if (n == 3):
+        nx = player.posx + ranges[i] * testPoints[n][0]
+        ny = player.posy + ranges[i] * testPoints[n][1]
+        if not getTrackmap(nx, ny):
+            if n == 3:
                 # 在QLearning中获得奖赏时有用
                 distFront = ranges[i]
             return True
-    if (n == 3):
+
+    if n == 3:
         # 在QLearning中获得奖赏时有用
         distFront = 1.0
+
     return False
 
 
 # 取赛道地图上指定位置 (x, y) 处的信息，检测该像素点是否可通过
 def getTrackmap(x, y):
-    c = renderModel.trackBaseMap.pixels[int(x) + int(y) * 1024]
+    # 计算像素点颜色
+    c = renderModel.trackBaseMap.pixels[int(x) + 1024 * int(y)]
 
     if (floor(red(c)) <= 15 and floor(green(c)) >= 240):
         # (0, 255, *) 这样的颜色（*表示任意值），表示这个位置可通过
         return True
-    else:
-        # 其他像素点颜色不可通过
-        return False
+    # 其他像素点颜色不可通过
+    return False
