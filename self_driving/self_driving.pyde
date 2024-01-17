@@ -43,7 +43,7 @@ def draw():
         if (player.isAlive):
             # 玩家是电脑，则开启训练模式
             if (player.isAI):
-                qModel.qLearn()     # 学习
+                qModel.qLearning()     # 学习
                 if (gModel.forceReset):
                     player.resetGame()
                 if (not player.isAlive):
@@ -55,9 +55,9 @@ def draw():
             # 玩家是人
             else:
                 player.run()
-                player.updatePos()
+                player.updatePosition()
                 player.checkBounds()
-                stateModel.calcTestpoints()
+                stateModel.calculate_Testpoints()
                 stateModel.updateState()
                 if (not player.isAlive or gModel.forceReset):
                     player.resetGame()
@@ -104,7 +104,7 @@ def keyPressed():
             player.driftRight()
             player.v = player.v-0.1
         if key == ' ':
-            player.reset()
+            player.resetTimer()
 
     if key == 'z' or key == 'Z':
         gModel.scalingFlag = not gModel.scalingFlag

@@ -64,7 +64,7 @@ def getReward(action):
 
 
 # 计算状态
-def calcstate():
+def calcualate_state():
     new_st = 0
     for n in range(0, len(stateModel.state)):
         new_st = new_st + (2 ** n) * int(stateModel.state[n])
@@ -93,7 +93,7 @@ def select_action(state, epsilon):
 
 
 # 执行选择的动作
-def perform_action(action):
+def perform(action):
     # 执行动作
     if (action == 1):
         player.turnLeft()
@@ -102,29 +102,29 @@ def perform_action(action):
 
     # 计算下一状态
     player.run()
-    player.updatePos()
+    player.updatePosistion()
     player.checkBounds()
-    stateModel.calcTestpoints()
+    stateModel.calculate_Testpoints()
     stateModel.updateState()
 
 
-def qLearn():
+def qLearning():
     global qTable, alpha, gamma
 
     # 得到当前状态
-    current_state = calcstate()
+    current_state = calcualate_state()
 
     # 为当前状态选择动作（行为策略：ε-greedy）
     action = select_action(current_state, True)
 
     # 执行动作
-    perform_action(action)
+    perform(action)
 
     # 采样得到奖赏, 更新Q-table
     reward = getReward(action)
 
     # 得到跳转到的下一个状态
-    fstate = calcstate()
+    fstate = calcualate_state()
 
     # 更新Q-table时选择maxq对应的动作（目标策略：greedy）
     faction = select_action(fstate, False)

@@ -26,7 +26,7 @@ def init():
 
 
 # 更新玩家位置
-def updatePos():
+def updatePosition():
     # 玩家数据
     global posx, posy, dir, v, r, bias
 
@@ -64,12 +64,12 @@ def updatePos():
 # 检查玩家是否存活
 def checkBounds():
     global isAlive
-    if not getTrackmap():
+    if not getTrack():
         isAlive = False
 
 
 # 获取车道信息
-def getTrackmap():
+def getTrack():
     global posx, posy
 
     # 获取小车中心点的像素信息
@@ -191,7 +191,7 @@ def resetGame():
     # 载入轨道
     trackModel.ldTrack()
     # 重置计时器
-    reset()
+    resetTimer()
     # 分数重置为0.0
     qModel.scores = 0.0
     # 偏移重置为0.0
@@ -204,20 +204,8 @@ def resetGame():
     gModel.forceReset = False
 
 
-# 开始游戏
-def startt():
-    global started
-    started = True
-
-
-# 暂停游戏
-def pauset():
-    global started
-    started = False
-
-
 # 重置计时器
-def reset():
+def resetTimer():
     global frames, best
     # 计算最优时间, 重置时间帧
     best = max(frames, best)

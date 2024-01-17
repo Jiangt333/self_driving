@@ -13,11 +13,11 @@ def init():
     testPoints = [[0.0, 0.0] for _ in range(7)]
     state = [False, False, False, False, False, False, False]
 
-    calcTestpoints()
+    calculate_Testpoints()
 
 
 # 计算碰撞检测点坐标
-def calcTestpoints():
+def calculate_Testpoints():
     global testPoints
 
     r2radians = radians(player.r)
@@ -72,7 +72,7 @@ def checkColl(n):
     for i in range(0, len(ranges)):
         nx = player.posx + ranges[i] * testPoints[n][0]
         ny = player.posy + ranges[i] * testPoints[n][1]
-        if not getTrackmap(nx, ny):
+        if not getTrack(nx, ny):
             if n == 3:
                 # 在QLearning中获得奖赏时有用
                 distFront = ranges[i]
@@ -86,10 +86,9 @@ def checkColl(n):
 
 
 # 取赛道地图上指定位置 (x, y) 处的信息，检测该像素点是否可通过
-def getTrackmap(x, y):
+def getTrack(x, y):
     # 计算像素点颜色
     c = renderModel.trackBaseMap.pixels[int(x) + 1024 * int(y)]
-
     if (floor(red(c)) <= 15 and floor(green(c)) >= 240):
         # (0, 255, *) 这样的颜色（*表示任意值），表示这个位置可通过
         return True
