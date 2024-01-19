@@ -92,7 +92,6 @@ def select_action(state, epsilon):
     return selected_a
 
 
-# 执行选择的动作
 def perform(action):
     # 执行动作
     if (action == 1):
@@ -102,7 +101,7 @@ def perform(action):
 
     # 计算下一状态
     player.run()
-    player.updatePosistion()
+    player.updatePosition()
     player.checkBounds()
     stateModel.calculate_Testpoints()
     stateModel.updateState()
